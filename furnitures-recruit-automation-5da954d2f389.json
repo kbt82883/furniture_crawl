@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "furnitures-recruit-automation",
+  "private_key_id": "5da954d2f389ff844f9a50f82ea1f974df11c02f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDrLFrKleFcBJSP\nHav85HF1eE+Sg+/BegndsI2A74LdpRb+tlPcVs0eSLb2GQiBr+4RfJEsDTqRAPJM\nzo7GTl0DCrUXgFnwZQF2WryfluiTSaYrEUtUqtjV6sZUIh0YW6k+cbWAlIW4Ji+S\npOhgswtrkIfyL9CxUQ496MRh6DA+vOq7CJdFlfAllKhX/j4KAOGFdjQWZlNR4Dii\nktliK465iy8YOInmWYlcV4rBQv4pDthWERfgbLU191Za1D+PaZVK7opYKOUa7jy5\nL6Xfd/6+k+Jr9zGwElE+bKVnUeFYekUE+G5EBJ3kH1MfWRBBkunvS3y0yA7sUu6h\ntK5/YqBPAgMBAAECggEASGewDlZl+5A3cva2OJbW7c1cZmYzn3Rk7DnK30selgIZ\nmdNl711UKsJFfnCHo3IYkI6zHYZ3JSTO9OHVqG2BCoo15iXwyug2MovOLi5mrc5L\nmE/rSwaM2xO8+zNDlPfHnD+jG5LetqsfE32tQ/RsDDKEAIdDMAyeH2Z2bBRyIiYt\n4KjxsqrJOVK2ytiRrNUDItYmbqJOH4YjN4sShiSqdCkzy/HG2tnczsfGHBxnmgLf\nf3/WsLprWvS4HF7hoL0MVwzj5t5E+jA2B4MoJlpThj9L3kGI0UnyxNQLOnxhRf8+\nghaBUrtVowGg3YGPyFVa++4ySHCp5Zz5ddkP7Q19OQKBgQD3mY7TM6GC9+1ZhXCL\nYni+gO8U8/gJr5Wyu8DI2WhowLs3hweRvfwrE79DbrsfSOGbDRm+OpB5j/frQiU3\nvyNxxfO3Cap46nASYJEAcamawA8H06tedwwafx3B1CPlC2eNjp3DWmc0mKVJpZ81\nOhJfGdvvINYQE0HtO4apH7w8eQKBgQDzJt676SVel8CxpNRy6gfI/WTUnIgFUIE8\nAggHkv4F4Z/JhdDsBUMkNIdXoiz7Umh1LLUEn1gKu9aQZw9qrblVPxg8RCUkskuT\n90eVTZl8VySJOT5Rg+8Do5HNNOePk/UXbPPgHTmohkXplyFF9CVPPmV1HwgWGbQ6\nWUoBg+SBBwKBgB5ukj5lLynAvTxuiTmofby0bi4+GjNekGCqcPR+vDV70sbtYsHH\n/xFwWOa52mfq9kevYYWe/xjh2A/jTl2+sWWPdff+SSSZc/LeSZQrZDQv/OjyXDK9\nIRC0pPyozUyejTi52awkFWFCjbYylBHftFhZ/k0y1Pye0VCOK2voCaPJAoGBAMcl\nUs+8yGqNB7l3MrlbjDzFrMul2JHhubcYQtNRRNQ0UtaOzuo/9Rm2HBNeNFEy0XMG\nxsueZlGEPtvOTQYmeuCi6IqTlYhUrynlIa/a+paoGLh7Nds1n5Dvav8TEYS6vcYN\n6j/oL80jDCehLBNLPzOD+zzNyaWwL7iKYN6U05YJAoGAAp/iDxCsG56QbGeVu6Kk\n5ZFl2wY3aEOI0Y+aWy4oDxyom2Kk9GDBw5z3w/HZpWZhA8RMsva1FXXyv5whx25v\nE/uL7yA2ANS1MGJsu/nBJLdCb1BsCPwE3gmrQyKjpbsXypX5fboibF5nVJq7FBu/\nfAYJt3uhsdvnTajDY0uutQ4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "furni-recruit@furnitures-recruit-automation.iam.gserviceaccount.com",
+  "client_id": "105165544040701405604",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/furni-recruit%40furnitures-recruit-automation.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
