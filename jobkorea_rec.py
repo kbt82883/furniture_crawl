@@ -24,13 +24,17 @@ driver.find_element(By.XPATH, '//*[@id="devSearchForm"]/div[2]/div/div[1]/dl[1]/
 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="lb_job_sch"]')))
 driver.find_element(By.XPATH, '//*[@id="lb_job_sch"]').send_keys('가구디자인')
 driver.find_element(By.XPATH, '//*[@id="lb_job_sch"]').send_keys('\n')
-time.sleep(random_sec)
+time.sleep(2)
 driver.find_element(By.XPATH, '//*[@id="devSearchForm"]/div[2]/div/div[1]/dl[1]/dd[2]/div[1]/div/div/dl/dd/div[1]/ul/li[1]/label/span/span').click()
 driver.find_element(By.XPATH, '//*[@id="devSearchForm"]/div[2]/div/div[1]/dl[1]/dd[2]/div[1]/div/div/dl/dd/div[1]/ul/li[2]/label/span/span').click()
 driver.find_element(By.XPATH, '//*[@id="devSearchForm"]/div[2]/div/div[1]/dl[1]/dd[2]/div[1]/div/div/dl/dd/div[1]/ul/li[3]/label/span/span').click()
 driver.find_element(By.XPATH, '//*[@id="devSearchForm"]/div[2]/div/div[1]/dl[1]/dd[2]/div[1]/div/div/dl/div/button[2]').click()
-time.sleep(random_sec)
+time.sleep(2)
 driver.find_element(By.XPATH, '//*[@id="dev-btn-search"]').click()
+time.sleep(2)
+driver.find_element(By.XPATH, '//*[@id="orderTab"]').click()
+time.sleep(1)
+driver.find_element(By.XPATH, '//*[@id="orderTab"]/option[1]').click()
 time.sleep(random_sec)
 
 
@@ -41,16 +45,16 @@ rec_intern = [] #인턴
 rec_pub = [] #채용공고 게시일
 rec_dl = [] #마감일
 cpn_name = [] #회사 이름
-rec_field = [] #모집분야 (가구 디자인 관련 only)
 cpn_kind = [] #가구 회사 종류 (인테리어, 가구 브랜드)
 people = [] #직원 수
 cpn_add = [] #회사 주소
-project = [] #프로젝트 경향
 recruit_url = [] #채용공고 url
 cpn_url = [] #회사 url
-cpn_sns = [] #회사 sns
 
+rec_title = []
 recruit_career = [] #신입·경력·인턴 부분
+rec_pub_messy = []
+rec_dl_messy = []
 
 #채용공고 url 수집하기
 page = 5 #원하는 페이지 입력
@@ -121,49 +125,41 @@ for recruit_crawl in recruit_url:
     # driver.switch_to.default_content()
     # if len(key_01) + len(key_02) + len(key_03) + len(key_04) + len(key_05) + len(key_06) + len(key_07) + len(key_08) + len(key_09) > 0:
         
+    #채용공고 제목
+    text_crawling(rec_title, By.XPATH, '//*[@id="container"]/section/div[1]/article/div[1]/h3')
+
     #신입·경력·인턴 부분
     text_crawling(recruit_career, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div:nth-child(1) > dl > dd:nth-child(2)")
     
     #채용공고 게시일
     if len(driver.find_elements(By.CSS_SELECTOR, "#tab02 > div > article.artReadPeriod > div > dl.date > dd")) >= 2:
-        text_crawling(rec_pub, By.CSS_SELECTOR, "#tab02 > div > article.artReadPeriod > div > dl.date > dd:nth-child(2) > span")
+        text_crawling(rec_pub_messy, By.CSS_SELECTOR, "#tab02 > div > article.artReadPeriod > div > dl.date > dd:nth-child(2) > span")
     else:
-        rec_pub.append("확인 필요!")
+        rec_pub_messy.append("확인 필요!")
     
     #마감일
     if len(driver.find_elements(By.CSS_SELECTOR, "#tab02 > div > article.artReadPeriod > div > dl.date > dd")) >= 2:
-        text_crawling(rec_dl, By.CSS_SELECTOR, "#tab02 > div > article.artReadPeriod > div > dl.date > dd:nth-child(4) > span")
+        text_crawling(rec_dl_messy, By.CSS_SELECTOR, "#tab02 > div > article.artReadPeriod > div > dl.date > dd:nth-child(4) > span")
     else:
-        rec_dl.append("확인 필요!")
+        rec_dl_messy.append("확인 필요!")
     
     #회사 이름
     text_crawling(cpn_name, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.sumTit > h3 > div > span")
-    #모집분야 (가구 디자인 관련 only)
-    # text_crawling(rec_field)
-
-    #가구 회사 종류 (인테리어, 가구 브랜드)
-    # text_crawling(cpn_kind)
 
     #직원 수
     if len(driver.find_elements(By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div.tbCol.tbCoInfo > dl > dd")) >= 5:
         text_crawling(people, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div.tbCol.tbCoInfo > dl > dd:nth-child(4) > span")
     else:
-        people.append("확인 필요!")
+        people.append("-")
 
     #회사 주소 - 지역이 여러개인 경우를 손봐야함
     text_crawling(cpn_add, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div:nth-child(2) > dl > dd:nth-child(6) > a")
-
-    #프로젝트 경향
-    # text_crawling(project)
 
     #회사 url
     if len(driver.find_elements(By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div.tbCol.tbCoInfo > dl > dd")) >= 5:
         text_crawling(cpn_url, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div.tbCol.tbCoInfo > dl > dd:nth-child(10) > span > a")
     else:   
-        cpn_url.append("확인 필요!")
-
-    #회사 sns
-    # text_crawling(cpn_sns)
+        cpn_url.append("-")
 
     print('채용공고 ' + str(len(recruit_url)) + '개 중 ' + str(num) + '번째 채용공고 확인 완료')
     if num % 10 == 0:
@@ -201,13 +197,27 @@ for i in recruit_career:
     else:
         rec_intern.append('')
 
+#게시일 마감일 00월 00일로 변환
+for i in rec_pub_messy:
+    if i == '확인 필요!':
+        rec_pub.append('확인 필요!')
+    else:
+        rec_pub.append(i[5:7] + '월 ' + i[8:10] + '일')
 
-for i in cpn_name:
-    rec_field.append('')
-    cpn_kind.append('')
-    project.append('')
-    cpn_sns.append('')
+for i in rec_dl_messy:
+    if i == '확인 필요!':
+        rec_dl.append('확인 필요!')
+    else:
+        rec_dl.append(i[5:7] + '월 ' + i[8:10] + '일')
 
+#가구 회사 종류
+for i in rec_title:
+    if '인테리어' in i:
+        cpn_kind.append('인테리어')
+    elif '가구' in i:
+        cpn_kind.append('가구 브랜드')
+    else:
+        cpn_kind.append('확인 필요!')
 
 #스프레드 시트에 작성----------------------------
 import gspread
@@ -222,6 +232,8 @@ doc = gc.open_by_url(spreadsheet_url)
 worksheet = doc.worksheet("잡코리아 크롤링") #작성하려는 시트를 기입
 
 df = DataFrame({'신입':rec_newcomer, '경력':rec_career, '인턴':rec_intern, '채용공고 게시일':rec_pub, '채용 마감일':rec_dl, 
-                '회사 명':cpn_name, '모집분야':rec_field, '가구 회사 종류':cpn_kind, '직원 수':people, '위치':cpn_add, 
-                '프로젝트 경향':project, '채용 링크':recruit_url, '회사 홈페이지':cpn_url, '회사 sns':cpn_sns})
+                '회사 명':cpn_name, '가구 회사 종류':cpn_kind, '직원 수':people, '위치':cpn_add, 
+                '채용 링크':recruit_url, '회사 홈페이지':cpn_url})
 worksheet.update([df.columns.values.tolist()] + df.values.tolist())
+
+print('구글 시트 작성 완료')
