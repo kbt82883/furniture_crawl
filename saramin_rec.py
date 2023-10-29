@@ -175,21 +175,21 @@ for i in recruit_career:
     if "신입" in i:
         rec_newcomer.append('o')
     else:
-        rec_newcomer.append('')
+        rec_newcomer.append('-')
 
 #경력 구분
 for i in recruit_career:
     if '경력' in i:
         rec_career.append('o')
     else:
-        rec_career.append('')
+        rec_career.append('-')
     
 #인턴 구분
 for i in recruit_career:
     if "인턴" in i:
         rec_intern.append('o')
     else:
-        rec_intern.append('')
+        rec_intern.append('-')
 
 #게시일 마감일 00월 00일로 변환
 for i in rec_pub_messy:
@@ -220,8 +220,6 @@ for i in rec_title:
         cpn_kind.append('가구 브랜드')
     else:
         cpn_kind.append('확인 필요!')
-
-cpn_add_messy.append('리스트 길이 맞추기')
 
 #스프레드 시트에 작성----------------------------
 import gspread

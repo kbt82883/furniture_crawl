@@ -170,7 +170,7 @@ for i in recruit_career:
     if "신입" in i:
         rec_newcomer.append('o')
     else:
-        rec_newcomer.append('')
+        rec_newcomer.append('-')
 
 #경력 구분
 for i in recruit_career:
@@ -188,14 +188,14 @@ for i in recruit_career:
         elif len(i) == 2:
             rec_career.append('확인 필요!')
     else:
-        rec_career.append('')
+        rec_career.append('-')
     
 #인턴 구분
 for i in recruit_career:
     if "인턴" in i:
         rec_intern.append('o')
     else:
-        rec_intern.append('')
+        rec_intern.append('-')
 
 #게시일 마감일 00월 00일로 변환
 for i in rec_pub_messy:
