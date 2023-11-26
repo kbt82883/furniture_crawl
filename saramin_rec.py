@@ -54,7 +54,7 @@ rec_pub_messy = []
 rec_dl_messy = []
 
 #채용공고 url 수집하기
-page = 5 #원하는 페이지 입력
+page = 2 #원하는 페이지 입력
 for p in range(1,page+1): # 원하는 페이지까지 반복문
     
     # for문 안에 page_bar를 넣어주어 매번 지정
@@ -100,7 +100,7 @@ num = 0
 
 for recruit_crawl in recruit_url:
     driver.get(recruit_crawl)
-    time.sleep(random.uniform(2,3))
+    time.sleep(2)
     
     num = num + 1
 
@@ -137,28 +137,36 @@ for recruit_crawl in recruit_url:
     if driver.find_element(By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[1]/div/div[1]/a[1]').get_attribute("href"):
         cpn_info_page = driver.find_element(By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[1]/div/div[1]/a[1]').get_attribute("href")
         driver.get(cpn_info_page)
-        time.sleep(random.uniform(2,3))
+        time.sleep(2)
 
         #직원 수
         try:
-            text_crawling(people, By.XPATH, '//*[@id="content"]/div/div[2]/div[1]/ul/li//*[contains(text(),"명")]')
+            text_crawling(people, By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/ul/li//*[contains(text(),"명")]')
         except:
             people.append('-')
 
         #회사 주소 - 지역이 여러개인 경우를 손봐야함
-        cpn_info_list = driver.find_elements(By.XPATH, '//*[@id="content"]/div/div[2]/div[1]/dl/dt')
-        try:
-            for i in cpn_info_list:
-                if '기업주소' == i.text:
-                    cpn_add_index = int(driver.find_elements(By.XPATH, '//*[@id="content"]/div/div[2]/div[1]/dl/dt').index(i)) + 1
-                    text_crawling(cpn_add_messy, By.XPATH, '//*[@id="content"]/div/div[2]/div[1]/dl[1]/dd[' + str(cpn_add_index) + ']')
-        except:
+        cpn_info_list_elm = driver.find_elements(By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div/dt')
+
+        cpn_info_list = []
+        for i in driver.find_elements(By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div/dt'):
+            cpn_info_list.append(i.text)
+
+        if '주소' in cpn_info_list:
+            for i in cpn_info_list_elm:
+                if '주소' == i.text:
+                    cpn_add_index = int(driver.find_elements(By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div/dt').index(i)) + 1
+                    text_crawling(cpn_add_messy, By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div[' + str(cpn_add_index) + ']/dd')
+        else:
             cpn_add_messy.append('-')
 
         #회사 url
-        try:
-            text_crawling(cpn_url, By.XPATH, '//*[@id="content"]/div/div[2]/div[1]/dl[1]/dd//*[contains(text(),"http")]')
-        except:
+        if '홈페이지' in cpn_info_list:
+            for i in cpn_info_list_elm:
+                if '홈페이지' == i.text:
+                    cpn_url_index = int(driver.find_elements(By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div/dt').index(i)) + 1
+                    cpn_url.append(driver.find_element(By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div[' + str(cpn_url_index) + ']/dd/a').get_attribute("href"))
+        else:
             cpn_url.append('-')
 
     else:
@@ -204,10 +212,13 @@ for i in rec_dl_messy:
     else:
         rec_dl.append(i[5:7] + '월 ' + i[8:10] + '일')
 
+print(len(cpn_add_messy))
+print(cpn_add_messy)
+
 #회사 주소 00 00구 형태로 변환
 for i in cpn_add_messy:
     if i == '-':
-        cpn_add.append('-')    
+        cpn_add.append('-')
     else:
         a = i.split()
         cpn_add.append(a[1] + " " + a[2])
@@ -220,6 +231,19 @@ for i in rec_title:
         cpn_kind.append('가구 브랜드')
     else:
         cpn_kind.append('확인 필요!')
+
+print(len(rec_newcomer))
+print(len(rec_career))
+print(len(rec_intern))
+print(len(rec_pub))
+print(len(rec_dl))
+print(len(cpn_name))
+print(len(cpn_kind))
+print(len(people))
+print(len(cpn_add))
+print(len(recruit_url))
+print(len(cpn_url))
+
 
 #스프레드 시트에 작성----------------------------
 import gspread

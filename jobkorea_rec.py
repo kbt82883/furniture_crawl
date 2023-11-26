@@ -57,7 +57,7 @@ rec_pub_messy = []
 rec_dl_messy = []
 
 #채용공고 url 수집하기
-page = 5 #원하는 페이지 입력
+page = 2 #원하는 페이지 입력
 for p in range(1,page+1): # 원하는 페이지까지 반복문
     
     # for문 안에 page_bar를 넣어주어 매번 지정
@@ -129,7 +129,10 @@ for recruit_crawl in recruit_url:
     text_crawling(rec_title, By.XPATH, '//*[@id="container"]/section/div[1]/article/div[1]/h3')
 
     #신입·경력·인턴 부분
-    text_crawling(recruit_career, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div:nth-child(1) > dl > dd:nth-child(2)")
+    if len(driver.find_element(By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div:nth-child(1) > dl > dd:nth-child(2)").text) > 1:
+        text_crawling(recruit_career, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div:nth-child(1) > dl > dd:nth-child(2)")
+    else:
+        recruit_career.append("확인 필요!")
     
     #채용공고 게시일
     if len(driver.find_elements(By.CSS_SELECTOR, "#tab02 > div > article.artReadPeriod > div > dl.date > dd")) >= 2:
@@ -153,7 +156,7 @@ for recruit_crawl in recruit_url:
         people.append("-")
 
     #회사 주소 - 지역이 여러개인 경우를 손봐야함
-    text_crawling(cpn_add, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div:nth-child(2) > dl > dd:nth-child(6) > a")
+    text_crawling(cpn_add, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div:nth-child(2) > dl > dd > a")
 
     #회사 url
     if len(driver.find_elements(By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div.tbCol.tbCoInfo > dl > dd")) >= 5:
@@ -175,7 +178,7 @@ for i in recruit_career:
 #경력 구분
 for i in recruit_career:
     if '경력' in i:
-        if len(i) == 12:
+        if len(i) >= 12:
             rec_career.append(i[7])
         elif len(i) == 10:
             rec_career.append(i[4:6])
@@ -186,7 +189,7 @@ for i in recruit_career:
         elif len(i) == 4:
             rec_career.append('무관')
         elif len(i) == 2:
-            rec_career.append('확인 필요!')
+            rec_career.append('무관')
     else:
         rec_career.append('-')
     
@@ -216,8 +219,23 @@ for i in rec_title:
         cpn_kind.append('인테리어')
     elif '가구' in i:
         cpn_kind.append('가구 브랜드')
+    elif '침구' in i:
+        cpn_kind.append('가구 브랜드')
     else:
         cpn_kind.append('확인 필요!')
+
+print(len(rec_newcomer))
+print(len(rec_career))
+print(len(rec_intern))
+print(len(rec_pub))
+print(len(rec_dl))
+print(len(cpn_name))
+print(len(cpn_kind))
+print(len(people))
+print(len(cpn_add))
+print(len(recruit_url))
+print(len(cpn_url))
+
 
 #스프레드 시트에 작성----------------------------
 import gspread
