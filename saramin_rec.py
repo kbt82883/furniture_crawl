@@ -212,9 +212,6 @@ for i in rec_dl_messy:
     else:
         rec_dl.append(i[5:7] + '월 ' + i[8:10] + '일')
 
-print(len(cpn_add_messy))
-print(cpn_add_messy)
-
 #회사 주소 00 00구 형태로 변환
 for i in cpn_add_messy:
     if i == '-':

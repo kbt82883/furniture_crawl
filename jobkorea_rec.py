@@ -18,23 +18,30 @@ driver.get("https://www.jobkorea.co.kr/")
 
 #잡코리아에서 가구디자인 채용공고 검색하기
 time.sleep(3)
-driver.find_element(By.XPATH, '//*[@id="header"]/div[1]/div[2]/div/a').click()
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="devSearchForm"]/div[2]/div/div[1]/dl[1]/dt/p')))
-driver.find_element(By.XPATH, '//*[@id="devSearchForm"]/div[2]/div/div[1]/dl[1]/dt/p').click()
+driver.find_element(By.XPATH, '//*[@id="common_search_btn"]').click()
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="search"]/div/div/div[1]/div[3]/div[1]/button')))
+driver.find_element(By.XPATH, '//*[@id="search"]/div/div/div[1]/div[3]/div[1]/button').click()
 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="lb_job_sch"]')))
 driver.find_element(By.XPATH, '//*[@id="lb_job_sch"]').send_keys('가구디자인')
 driver.find_element(By.XPATH, '//*[@id="lb_job_sch"]').send_keys('\n')
 time.sleep(2)
-driver.find_element(By.XPATH, '//*[@id="devSearchForm"]/div[2]/div/div[1]/dl[1]/dd[2]/div[1]/div/div/dl/dd/div[1]/ul/li[1]/label/span/span').click()
-driver.find_element(By.XPATH, '//*[@id="devSearchForm"]/div[2]/div/div[1]/dl[1]/dd[2]/div[1]/div/div/dl/dd/div[1]/ul/li[2]/label/span/span').click()
-driver.find_element(By.XPATH, '//*[@id="devSearchForm"]/div[2]/div/div[1]/dl[1]/dd[2]/div[1]/div/div/dl/dd/div[1]/ul/li[3]/label/span/span').click()
-driver.find_element(By.XPATH, '//*[@id="devSearchForm"]/div[2]/div/div[1]/dl[1]/dd[2]/div[1]/div/div/dl/div/button[2]').click()
+driver.find_element(By.XPATH, '//*[@id="search"]/div/div/div[1]/div[3]/div[2]/div[1]/div/div/div/dl/dd/div[1]/ul/li[1]/label/span/span').click()
+driver.find_element(By.XPATH, '//*[@id="search"]/div/div/div[1]/div[3]/div[2]/div[1]/div/div/div/dl/dd/div[1]/ul/li[2]/label/span/span').click()
+driver.find_element(By.XPATH, '//*[@id="search"]/div/div/div[1]/div[3]/div[2]/div[1]/div/div/div/dl/dd/div[1]/ul/li[3]/label/span/span').click()
+driver.find_element(By.XPATH, '//*[@id="search"]/div/div/div[1]/div[3]/div[2]/div[1]/div/div/div/div/button[2]').click()
 time.sleep(2)
-driver.find_element(By.XPATH, '//*[@id="dev-btn-search"]').click()
+driver.find_element(By.XPATH, '//*[@id="lb_job_sch"]').send_keys('인테리어디자인')
+driver.find_element(By.XPATH, '//*[@id="lb_job_sch"]').send_keys('\n')
 time.sleep(2)
-driver.find_element(By.XPATH, '//*[@id="orderTab"]').click()
+driver.find_element(By.XPATH, '//*[@id="search"]/div/div/div[1]/div[3]/div[2]/div[1]/div/div/div/dl/dd/div[1]/ul/li[1]/label/span/span').click()
+driver.find_element(By.XPATH, '//*[@id="search"]/div/div/div[1]/div[3]/div[2]/div[1]/div/div/div/dl/dd/div[1]/ul/li[2]/label/span/span').click()
+driver.find_element(By.XPATH, '//*[@id="search"]/div/div/div[1]/div[3]/div[2]/div[1]/div/div/div/div/button[2]').click()
+time.sleep(2)
+driver.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/div/div[1]/div/div/div[1]/div[3]/div[2]/div[3]/div/dl[1]/dd[2]/button').click()
+time.sleep(2)
+driver.find_element(By.XPATH, '//*[@id="content"]/div/div/div[1]/div/div[2]/div[1]/div/button').click()
 time.sleep(1)
-driver.find_element(By.XPATH, '//*[@id="orderTab"]/option[1]').click()
+driver.find_element(By.XPATH, '//*[@id="content"]/div/div/div[1]/div/div[2]/div[1]/div/div/ul/li[2]/button').click()
 time.sleep(random_sec)
 
 
@@ -52,16 +59,17 @@ recruit_url = [] #채용공고 url
 cpn_url = [] #회사 url
 
 rec_title = []
+rec_title_messy = []
 recruit_career = [] #신입·경력·인턴 부분
 rec_pub_messy = []
 rec_dl_messy = []
 
 #채용공고 url 수집하기
-page = 2 #원하는 페이지 입력
+page = 3 #원하는 페이지 입력
 for p in range(1,page+1): # 원하는 페이지까지 반복문
     
     # for문 안에 page_bar를 넣어주어 매번 지정
-    page_bar = driver.find_elements(By.CSS_SELECTOR,'#dvGIPaging > div > ul > li > a')
+    page_bar = driver.find_elements(By.XPATH,'//*[@id="content"]/div/div/div[1]/div/div[2]/div[2]/div/div[2]/ul/li/a')
 
     for button in page_bar:
         if button.text == str(p):
@@ -70,7 +78,7 @@ for p in range(1,page+1): # 원하는 페이지까지 반복문
 
     time.sleep(random.uniform(1,2))
 
-    recruits = driver.find_elements(By.CSS_SELECTOR, "#dev-gi-list > div > div.tplList.tplJobList > table > tbody > tr > td > div > strong > a")
+    recruits = driver.find_elements(By.XPATH, '//*[@id="content"]/div/div/div[1]/div/div[2]/div[2]/div/div[1]/ul/li/div/div[2]/a')
 
     #채용공고 필터링
     for recruit in recruits: 
@@ -79,8 +87,8 @@ for p in range(1,page+1): # 원하는 페이지까지 반복문
             recruit_list = recruit.get_attribute("href")
             recruit_url.append(recruit_list)
     
-    if p % 10 == 0:  # 10의 배수일때 다음10페이지 버튼 클릭
-        driver.find_elements(By.CSS_SELECTOR,'#dvGIPaging > div > ul > li > a')[11].click()
+    # if p % 10 == 0:  # 10의 배수일때 다음10페이지 버튼 클릭
+    #     driver.find_elements(By.CSS_SELECTOR,'#dvGIPaging > div > ul > li > a')[11].click()
 
 print('크롤링 할 채용공고의 개수는 ' + str(len(recruit_url)) + '개 입니다')
 print('예상 소요 시간 : ' + str(round((len(recruit_url)*20)/60)) + '분')
@@ -126,7 +134,8 @@ for recruit_crawl in recruit_url:
     # if len(key_01) + len(key_02) + len(key_03) + len(key_04) + len(key_05) + len(key_06) + len(key_07) + len(key_08) + len(key_09) > 0:
         
     #채용공고 제목
-    text_crawling(rec_title, By.XPATH, '//*[@id="container"]/section/div[1]/article/div[1]/h3')
+    text_crawling(rec_title_messy, By.XPATH, '//*[@id="container"]/section/div[1]/article/div[1]/h3')
+    # print(driver.find_element(By.XPATH,'//*[@id="container"]/section/div[1]/article/div[1]/h3').text)
 
     #신입·경력·인턴 부분
     if len(driver.find_element(By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div:nth-child(1) > dl > dd:nth-child(2)").text) > 1:
@@ -213,10 +222,20 @@ for i in rec_dl_messy:
     else:
         rec_dl.append(i[5:7] + '월 ' + i[8:10] + '일')
 
+for i in rec_title_messy:
+    rec_title.append(i[i.rfind('\n'):len(i)])
+
 #가구 회사 종류
 for i in rec_title:
     if '인테리어' in i:
-        cpn_kind.append('인테리어')
+        if ('시공' in i or '현장' in i) and ('설계' in i or '디자' in i):
+            cpn_kind.append('종합 인테리어')
+        elif '시공' in i or '현장' in i:
+            cpn_kind.append('인테리어 시공(현장)')
+        elif '설계' in i or '디자' in i:
+            cpn_kind.append('인테리어 디자인')
+        else:
+            cpn_kind.append('확인 필요!')
     elif '가구' in i:
         cpn_kind.append('가구 브랜드')
     elif '침구' in i:
@@ -236,6 +255,7 @@ print(len(cpn_add))
 print(len(recruit_url))
 print(len(cpn_url))
 
+print(rec_title)
 
 #스프레드 시트에 작성----------------------------
 import gspread

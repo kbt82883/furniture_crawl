@@ -1,19 +1,19 @@
 #뉴스레터 생성시 작성해야 할 것
 #몇월 몇주차 인지
-month = '11'
-week = '5'
+month = '12'
+week = '1'
 #언제까지의 채용공고 기준인지
-base_date = "23.11.26 까지의 채용공고 기준"
+base_date = "23.12.03 까지의 채용공고 기준"
 #신입,경력,인턴별로 새로운 채용공고가 몇개인지
-new_newcomer_number = 11
-new_career_number = 42
+new_newcomer_number = 20
+new_career_number = 30
 
 #구글시트에서 데이터 가져오기
 import gspread
 
 gc = gspread.service_account('furnitures-recruit-automation-5da954d2f389.json')
 sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/1ygo_XrS4p6bD5nD6ozG20NLz3NmVRn9u5JlM7rNuatY/edit?usp=sharing")
-wks = sh.worksheet("figma 연동")
+wks = sh.worksheet("main")
 
 #신입 데이터
 new_dt_1 = wks.col_values(3) #신입_채용 마감일
