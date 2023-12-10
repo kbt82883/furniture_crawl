@@ -1,12 +1,12 @@
 #뉴스레터 생성시 작성해야 할 것
 #몇월 몇주차 인지
 month = '12'
-week = '1'
+week = '2'
 #언제까지의 채용공고 기준인지
-base_date = "23.12.03 까지의 채용공고 기준"
+base_date = "23.12.10 까지의 채용공고 기준"
 #신입,경력,인턴별로 새로운 채용공고가 몇개인지
-new_newcomer_number = 20
-new_career_number = 30
+new_newcomer_number = 57
+new_career_number = 158
 
 #구글시트에서 데이터 가져오기
 import gspread
@@ -65,20 +65,62 @@ pdfmetrics.registerFont(TTFont("나눔고딕d", "./../../fonts/NaverNanumSquareN
 pdfmetrics.registerFont(TTFont("나눔고딕e", "./../../fonts/NaverNanumSquareNeo/NanumSquareNeo/TTF/NanumSquareNeo-eHv.ttf"))
 
 #캔버스 생성
-pdf = canvas.Canvas("C:/Users/USER/Desktop/와이즈올 업무용/picky 뉴스레터 모음/뉴스레터 가구/[" + month + "월 " + week + "주차] picky 가구.pdf")
+pdf = canvas.Canvas("C:/Users/USER/Desktop/와이즈올 업무용/picky 뉴스레터 모음/뉴스레터 가구, 인테리어/" + month + "월/[" + month + "월 " + week + "주차] picky 가구.pdf")
+
+#신입 페이지 생성 함수
+def draw_newcomer_page():
+    pdf.drawImage("뉴스레터 이미지 폴더/가구_신입.png", 0, 0, width=595, height=841)
+
+    #00월 0주차 채용공고
+    pdf.setFont("나눔고딕d", 12)
+    pdf.setFillColor('#000000')
+    pdf.drawString(470, 790, month+"월 "+week+"주차 채용공고")
+
+    #00.00.00 까지의 채용공고 기준
+    pdf.setFont("나눔고딕c", 7)
+    pdf.setFillColor('#9BA2B3')
+    pdf.drawString(470, 780, base_date)
+
+    #카테고리 작성
+    pdf.setFont("나눔고딕d", 10)
+    pdf.setFillColor('#9BA2B3')
+    pdf.drawString(30, 714, "채용 마감일")
+    pdf.drawString(100, 714, "회사 명")
+    pdf.drawString(250, 714, "구분")
+    pdf.drawString(340, 714, "직원 수")
+    pdf.drawString(390, 714, "위치")
+    pdf.drawString(480, 714, "채용 링크")
+    pdf.drawString(530, 714, "홈페이지")
+
+#경력 페이지 생성 함수
+def draw_career_page():
+    pdf.drawImage("뉴스레터 이미지 폴더/가구_경력.png", 0, 0, width=595, height=841)
+
+    #00월 0주차 채용공고
+    pdf.setFont("나눔고딕d", 12)
+    pdf.setFillColor('#000000')
+    pdf.drawString(470, 790, month+"월 "+week+"주차 채용공고")
+
+    #00.00.00 까지의 채용공고 기준
+    pdf.setFont("나눔고딕c", 7)
+    pdf.setFillColor('#9BA2B3')
+    pdf.drawString(470, 780, base_date)
+
+    #카테고리 작성
+    pdf.setFont("나눔고딕d", 10)
+    pdf.setFillColor('#9BA2B3')
+    pdf.drawString(30, 714, "채용 마감일")
+    pdf.drawString(100, 714, "회사 명")
+    pdf.drawString(240, 714, "요구 경력")
+    pdf.drawString(280, 714, "구분")
+    pdf.drawString(350, 714, "직원 수")
+    pdf.drawString(390, 714, "위치")
+    pdf.drawString(480, 714, "채용 링크")
+    pdf.drawString(530, 714, "홈페이지")
+
 
 #신입 채용정보 데이터 작성하기---------
-pdf.drawImage("뉴스레터 이미지 폴더/가구_신입.png", 0, 0, width=595, height=841)
-
-#00월 0주차 채용공고
-pdf.setFont("나눔고딕d", 12)
-pdf.setFillColor('#000000')
-pdf.drawString(470, 790, month+"월 "+week+"주차 채용공고")
-
-#00.00.00 까지의 채용공고 기준
-pdf.setFont("나눔고딕c", 7)
-pdf.setFillColor('#9BA2B3')
-pdf.drawString(470, 780, base_date)
+draw_newcomer_page()
 
 newcomer_number = len(new_dt_1) - 1 #채용공고 개수
 
@@ -91,53 +133,33 @@ for i in range(1,newcomer_number + 1):
     if i <= new_newcomer_number:
         pdf.setStrokeColor('#2C0AE4')
         pdf.setFillColor('#2C0AE4')
-        pdf.circle(25, y+2.5, 2.5, stroke=1, fill=1)
+        pdf.circle(24, y+2.5, 2.5, stroke=1, fill=1)
 
     pdf.setFont("나눔고딕b", 9)
     pdf.setFillColor('#000000')
-    pdf.drawString(32, y, new_dt_1[i])
-    pdf.drawString(112, y, new_dt_2[i])
-    pdf.drawString(261, y, new_dt_3[i])
-    pdf.drawString(336, y, new_dt_4[i])
-    pdf.drawString(388, y, new_dt_5[i])
+    pdf.drawString(30, y, new_dt_1[i])
+    pdf.drawString(100, y, new_dt_2[i])
+    pdf.drawString(250, y, new_dt_3[i])
+    pdf.drawString(340, y, new_dt_4[i])
+    pdf.drawString(390, y, new_dt_5[i])
 
     pdf.setFont("나눔고딕e", 9)
-    pdf.drawString(472, y, "click !")
-    link_rect = pdf.linkURL(new_dt_6[i], (472, y, 500, y+9), relative=1)
+    pdf.drawString(480, y, "click !")
+    link_rect = pdf.linkURL(new_dt_6[i], (480, y, 510, y+9), relative=1)
     if new_dt_7[i].startswith('http'):
-        pdf.drawString(532, y, "click !")
-        link_rect = pdf.linkURL(new_dt_7[i], (532, y, 560, y+9), relative=1)
+        pdf.drawString(530, y, "click !")
+        link_rect = pdf.linkURL(new_dt_7[i], (530, y, 560, y+9), relative=1)
     else:
-        pdf.drawString(532, y, "-")
+        pdf.drawString(530, y, "-")
 
     if i % 30 == 0:  # 30의 배수일 때 페이지 추가
         pdf.showPage()
-        pdf.drawImage("뉴스레터 이미지 폴더/가구_신입.png", 0, 0, width=595, height=841)
-
-        #00월 0주차 채용공고
-        pdf.setFont("나눔고딕d", 12)
-        pdf.setFillColor('#000000')
-        pdf.drawString(470, 790, month+"월 "+week+"주차 채용공고")
-
-        #00.00.00 까지의 채용공고 기준
-        pdf.setFont("나눔고딕c", 7)
-        pdf.setFillColor('#9BA2B3')
-        pdf.drawString(470, 780, base_date)
+        draw_newcomer_page()
 
 pdf.showPage()
 
 #경력 채용정보 데이터 작성하기----------------
-pdf.drawImage("뉴스레터 이미지 폴더/가구_경력.png", 0, 0, width=595, height=841)
-
-#00월 0주차 채용공고
-pdf.setFont("나눔고딕d", 12)
-pdf.setFillColor('#000000')
-pdf.drawString(470, 790, month+"월 "+week+"주차 채용공고")
-
-#00.00.00 까지의 채용공고 기준
-pdf.setFont("나눔고딕c", 7)
-pdf.setFillColor('#9BA2B3')
-pdf.drawString(470, 780, base_date)
+draw_career_page()
 
 career_number = len(car_dt_1) - 1 #채용공고 개수
 
@@ -150,38 +172,28 @@ for i in range(1,career_number + 1):
     if i <= new_career_number:
         pdf.setStrokeColor('#2C0AE4')
         pdf.setFillColor('#2C0AE4')
-        pdf.circle(25, y+2.5, 2.5, stroke=1, fill=1)
+        pdf.circle(24, y+2.5, 2.5, stroke=1, fill=1)
 
     pdf.setFont("나눔고딕b", 9)
     pdf.setFillColor('#000000')
-    pdf.drawString(34, y, car_dt_1[i])
-    pdf.drawString(101, y, car_dt_2[i])
-    pdf.drawString(239, y, car_dt_3[i])
-    pdf.drawString(291, y, car_dt_4[i])
-    pdf.drawString(352, y, car_dt_5[i])
-    pdf.drawString(397, y, car_dt_6[i])
+    pdf.drawString(30, y, car_dt_1[i])
+    pdf.drawString(100, y, car_dt_2[i])
+    pdf.drawString(240, y, car_dt_3[i])
+    pdf.drawString(280, y, car_dt_4[i])
+    pdf.drawString(350, y, car_dt_5[i])
+    pdf.drawString(390, y, car_dt_6[i])
 
     pdf.setFont("나눔고딕e", 9)
-    pdf.drawString(472, y, "click !")
-    link_rect = pdf.linkURL(car_dt_7[i], (472, y, 500, y+9), relative=1)
+    pdf.drawString(480, y, "click !")
+    link_rect = pdf.linkURL(car_dt_7[i], (480, y, 510, y+9), relative=1)
     if car_dt_8[i].startswith('http'):
-        pdf.drawString(532, y, "click !")
-        link_rect = pdf.linkURL(car_dt_8[i], (532, y, 560, y+9), relative=1)
+        pdf.drawString(530, y, "click !")
+        link_rect = pdf.linkURL(car_dt_8[i], (530, y, 560, y+9), relative=1)
     else:
-        pdf.drawString(532, y, "-")
+        pdf.drawString(530, y, "-")
 
     if i % 30 == 0:  # 30의 배수일 때 페이지 추가
         pdf.showPage()
-        pdf.drawImage("뉴스레터 이미지 폴더/가구_경력.png", 0, 0, width=595, height=841)
-
-        #00월 0주차 채용공고
-        pdf.setFont("나눔고딕d", 12)
-        pdf.setFillColor('#000000')
-        pdf.drawString(470, 790, month+"월 "+week+"주차 채용공고")
-
-        #00.00.00 까지의 채용공고 기준
-        pdf.setFont("나눔고딕c", 7)
-        pdf.setFillColor('#9BA2B3')
-        pdf.drawString(470, 780, base_date)
+        draw_career_page()
 
 pdf.save()

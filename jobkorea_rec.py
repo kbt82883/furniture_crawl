@@ -65,7 +65,7 @@ rec_pub_messy = []
 rec_dl_messy = []
 
 #채용공고 url 수집하기
-page = 3 #원하는 페이지 입력
+page = 12 #원하는 페이지 입력
 for p in range(1,page+1): # 원하는 페이지까지 반복문
     
     # for문 안에 page_bar를 넣어주어 매번 지정
@@ -231,7 +231,7 @@ for i in rec_title:
         if ('시공' in i or '현장' in i) and ('설계' in i or '디자' in i):
             cpn_kind.append('종합 인테리어')
         elif '시공' in i or '현장' in i:
-            cpn_kind.append('인테리어 시공(현장)')
+            cpn_kind.append('인테리어 시공')
         elif '설계' in i or '디자' in i:
             cpn_kind.append('인테리어 디자인')
         else:

@@ -31,7 +31,7 @@ driver.find_element(By.XPATH, '//*[@id="btn_search_recruit"]').click()
 time.sleep(2)
 driver.find_element(By.XPATH, '//*[@id="recruit_info"]/div[2]/div/div[2]/button').click()
 time.sleep(1)
-driver.find_element(By.XPATH, '//*[@id="recruit_info"]/div[2]/div/div[2]/div/ul/li[3]/button').click()
+driver.find_element(By.XPATH, '//*[@id="recruit_info"]/div[2]/div/div[2]/div/ul/li//button[contains(text(),"등록일순")]').click()
 time.sleep(2)
 
 #리스트 정의
@@ -188,7 +188,12 @@ for i in recruit_career:
 #경력 구분
 for i in recruit_career:
     if '경력' in i:
-        rec_career.append('o')
+        if '무관' in i:
+            rec_career.append('무관')
+        elif '년' in i:
+            rec_career.append(i[i.rfind('경력')+3:i.rfind('년')])
+        else:
+            rec_career.append('확인 필요!')
     else:
         rec_career.append('-')
     
@@ -223,8 +228,17 @@ for i in cpn_add_messy:
 #가구 회사 종류
 for i in rec_title:
     if '인테리어' in i:
-        cpn_kind.append('인테리어')
+        if ('시공' in i or '현장' in i) and ('설계' in i or '디자' in i):
+            cpn_kind.append('종합 인테리어')
+        elif '시공' in i or '현장' in i:
+            cpn_kind.append('인테리어 시공')
+        elif '설계' in i or '디자' in i:
+            cpn_kind.append('인테리어 디자인')
+        else:
+            cpn_kind.append('확인 필요!')
     elif '가구' in i:
+        cpn_kind.append('가구 브랜드')
+    elif '침구' in i:
         cpn_kind.append('가구 브랜드')
     else:
         cpn_kind.append('확인 필요!')
