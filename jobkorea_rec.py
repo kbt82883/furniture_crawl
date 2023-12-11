@@ -1,3 +1,5 @@
+page = 1 #입력된 페이지만큼 크롤링
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
@@ -63,9 +65,9 @@ rec_title_messy = []
 recruit_career = [] #신입·경력·인턴 부분
 rec_pub_messy = []
 rec_dl_messy = []
+cpn_add_messy = []
 
 #채용공고 url 수집하기
-page = 12 #원하는 페이지 입력
 for p in range(1,page+1): # 원하는 페이지까지 반복문
     
     # for문 안에 page_bar를 넣어주어 매번 지정
@@ -93,16 +95,6 @@ for p in range(1,page+1): # 원하는 페이지까지 반복문
 print('크롤링 할 채용공고의 개수는 ' + str(len(recruit_url)) + '개 입니다')
 print('예상 소요 시간 : ' + str(round((len(recruit_url)*20)/60)) + '분')
 
-# #1페이지만 수집
-# recruits = driver.find_elements(By.CSS_SELECTOR, "#dev-gi-list > div > div.tplList.tplJobList > table > tbody > tr > td > div > strong > a")
-
-# #채용공고 필터링
-# for recruit in recruits: 
-#     a = int('인테리어' in recruit.text) + int('가구' in recruit.text) + int('침구' in recruit.text)
-#     if a > 0:
-#         recruit_list = recruit.get_attribute("href")
-#         recruit_url.append(recruit_list)
-
 #url에 접속해서 회사 채용정보 추출
 def text_crawling(list, selector, elm):
     list.append(driver.find_element(selector, elm).text)
@@ -114,24 +106,6 @@ for recruit_crawl in recruit_url:
     time.sleep(random.uniform(18,22))
     
     num = num + 1
-    # if num % 3 == 0:
-    #     time.sleep(random.uniform(10,11))
-    # else:
-    #     time.sleep(random.uniform(5,6))
-    
-    #html inside html 키워드로 필터링
-    # driver.switch_to.frame("gib_frame")
-    # key_01 = driver.find_elements(By.XPATH, '//*[contains(text(),"인테리어")]')
-    # key_02 = driver.find_elements(By.XPATH, '//*[contains(text(),"가구")]')
-    # key_03 = driver.find_elements(By.XPATH, '//*[contains(text(),"가구디자인")]')
-    # key_04 = driver.find_elements(By.XPATH, '//*[contains(text(),"가구 디자인")]')
-    # key_05 = driver.find_elements(By.XPATH, '//*[contains(text(),"가구디자이너")]')
-    # key_06 = driver.find_elements(By.XPATH, '//*[contains(text(),"가구 디자이너")]')
-    # key_07 = driver.find_elements(By.XPATH, '//*[contains(text(),"가구설계")]')
-    # key_08 = driver.find_elements(By.XPATH, '//*[contains(text(),"가구 설계")]')
-    # key_09 = driver.find_elements(By.XPATH, '//*[contains(text(),"침구")]')
-    # driver.switch_to.default_content()
-    # if len(key_01) + len(key_02) + len(key_03) + len(key_04) + len(key_05) + len(key_06) + len(key_07) + len(key_08) + len(key_09) > 0:
         
     #채용공고 제목
     text_crawling(rec_title_messy, By.XPATH, '//*[@id="container"]/section/div[1]/article/div[1]/h3')
@@ -146,12 +120,16 @@ for recruit_crawl in recruit_url:
     #채용공고 게시일
     if len(driver.find_elements(By.CSS_SELECTOR, "#tab02 > div > article.artReadPeriod > div > dl.date > dd")) >= 2:
         text_crawling(rec_pub_messy, By.CSS_SELECTOR, "#tab02 > div > article.artReadPeriod > div > dl.date > dd:nth-child(2) > span")
+    elif len(driver.find_elements(By.CSS_SELECTOR, "#tab02 > div.divReadBx.clear.devMakeSameHeight > article.artReadPeriod.artReadRegular > p")) >= 1:
+        rec_pub_messy.append('-')
     else:
         rec_pub_messy.append("확인 필요!")
     
     #마감일
     if len(driver.find_elements(By.CSS_SELECTOR, "#tab02 > div > article.artReadPeriod > div > dl.date > dd")) >= 2:
         text_crawling(rec_dl_messy, By.CSS_SELECTOR, "#tab02 > div > article.artReadPeriod > div > dl.date > dd:nth-child(4) > span")
+    elif len(driver.find_elements(By.CSS_SELECTOR, "#tab02 > div.divReadBx.clear.devMakeSameHeight > article.artReadPeriod.artReadRegular > p")) >= 1:
+        rec_dl_messy.append('상시 채용')
     else:
         rec_dl_messy.append("확인 필요!")
     
@@ -165,7 +143,7 @@ for recruit_crawl in recruit_url:
         people.append("-")
 
     #회사 주소 - 지역이 여러개인 경우를 손봐야함
-    text_crawling(cpn_add, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div:nth-child(2) > dl > dd > a")
+    text_crawling(cpn_add_messy, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div:nth-child(2) > dl > dd > a")
 
     #회사 url
     if len(driver.find_elements(By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div.tbCol.tbCoInfo > dl > dd")) >= 5:
@@ -194,11 +172,14 @@ for i in recruit_career:
         elif len(i) == 9:
             rec_career.append(i[4])
         elif len(i) == 5:
-            rec_career.append('확인 필요!')
+            rec_career.append('무관')
         elif len(i) == 4:
             rec_career.append('무관')
         elif len(i) == 2:
             rec_career.append('무관')
+        else:
+            rec_career.append('확인 필요!')
+
     else:
         rec_career.append('-')
     
@@ -213,12 +194,16 @@ for i in recruit_career:
 for i in rec_pub_messy:
     if i == '확인 필요!':
         rec_pub.append('확인 필요!')
+    elif i == '-':
+        rec_pub.append('-')
     else:
         rec_pub.append(i[5:7] + '월 ' + i[8:10] + '일')
 
 for i in rec_dl_messy:
     if i == '확인 필요!':
         rec_dl.append('확인 필요!')
+    elif i == '상시 채용':
+        rec_dl.append('상시 채용')
     else:
         rec_dl.append(i[5:7] + '월 ' + i[8:10] + '일')
 
@@ -228,11 +213,11 @@ for i in rec_title_messy:
 #가구 회사 종류
 for i in rec_title:
     if '인테리어' in i:
-        if ('시공' in i or '현장' in i) and ('설계' in i or '디자' in i):
+        if (('시공' in i or '현장' in i) or '공사' in i) and (('설계' in i or '디자' in i) or '컨설턴트' in i):
             cpn_kind.append('종합 인테리어')
-        elif '시공' in i or '현장' in i:
+        elif (('시공' in i or '현장' in i) or '공사' in i):
             cpn_kind.append('인테리어 시공')
-        elif '설계' in i or '디자' in i:
+        elif (('설계' in i or '디자' in i) or '컨설턴트' in i):
             cpn_kind.append('인테리어 디자인')
         else:
             cpn_kind.append('확인 필요!')
@@ -243,6 +228,16 @@ for i in rec_title:
     else:
         cpn_kind.append('확인 필요!')
 
+#회사 주소 00 00구 형태로 변환
+for i in cpn_add_messy:
+    if i == '-':
+        cpn_add.append('-')
+    else:
+        a = i.split()
+        cpn_add.append(a[0] + " " + a[1])
+
+
+print('리스트 개수입니다')
 print(len(rec_newcomer))
 print(len(rec_career))
 print(len(rec_intern))
@@ -255,7 +250,6 @@ print(len(cpn_add))
 print(len(recruit_url))
 print(len(cpn_url))
 
-print(rec_title)
 
 #스프레드 시트에 작성----------------------------
 import gspread

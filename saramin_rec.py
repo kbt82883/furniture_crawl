@@ -1,3 +1,5 @@
+page = 1 #입력된 페이지만큼 크롤링
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
@@ -52,9 +54,9 @@ cpn_add_messy = []
 recruit_career = [] #신입·경력·인턴 부분
 rec_pub_messy = []
 rec_dl_messy = []
+people_messy = []
 
 #채용공고 url 수집하기
-page = 2 #원하는 페이지 입력
 for p in range(1,page+1): # 원하는 페이지까지 반복문
     
     # for문 안에 page_bar를 넣어주어 매번 지정
@@ -82,16 +84,6 @@ for p in range(1,page+1): # 원하는 페이지까지 반복문
 print('크롤링 할 채용공고의 개수는 ' + str(len(recruit_url)) + '개 입니다')
 print('예상 소요 시간 : ' + str(round((len(recruit_url)*6)/60)) + '분')
 
-# #1페이지만 수집
-# recruits = driver.find_elements(By.CSS_SELECTOR, "#recruit_info_list > div.content >div >div > h2 > a")
-
-# #채용공고 필터링
-# for recruit in recruits: 
-#     a = int('인테리어' in recruit.text) + int('가구' in recruit.text) + int('침구' in recruit.text)
-#     if a > 0:
-#         recruit_list = recruit.get_attribute("href")
-#         recruit_url.append(recruit_list)
-
 #url에 접속해서 회사 채용정보 추출
 def text_crawling(list, selector, elm):
     list.append(driver.find_element(selector, elm).text)
@@ -117,6 +109,12 @@ for recruit_crawl in recruit_url:
         text_crawling(rec_pub_messy, By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[5]/div/div/dl/dd[1]')
     elif len(driver.find_elements(By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[4]/div/div/dl/dd')) >= 2:
         text_crawling(rec_pub_messy, By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[4]/div/div/dl/dd[1]')
+    elif len(driver.find_elements(By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[6]/div/div/p/strong')) >= 1:
+        text_crawling(rec_pub_messy, By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[6]/div/div/dl/dd[1]')
+    elif len(driver.find_elements(By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[5]/div/div/p/strong')) >= 1:
+        text_crawling(rec_pub_messy, By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[5]/div/div/dl/dd[1]')
+    elif len(driver.find_elements(By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[4]/div/div/p/strong')) >= 1:
+        text_crawling(rec_pub_messy, By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[4]/div/div/dl/dd[1]')
     else:
         rec_pub_messy.append("확인 필요!")
 
@@ -127,6 +125,12 @@ for recruit_crawl in recruit_url:
         text_crawling(rec_dl_messy, By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[5]/div/div/dl/dd[2]')
     elif len(driver.find_elements(By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[4]/div/div/dl/dd')) >= 2:
         text_crawling(rec_dl_messy, By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[4]/div/div/dl/dd[2]')
+    elif len(driver.find_elements(By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[6]/div/div/p/strong')) >= 1:
+        rec_dl_messy.append('충원 시')
+    elif len(driver.find_elements(By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[5]/div/div/p/strong')) >= 1:
+        rec_dl_messy.append('충원 시')
+    elif len(driver.find_elements(By.XPATH, '//*[@id="content"]/div[3]/section[1]/div[1]/div[4]/div/div/p/strong')) >= 1:
+        rec_dl_messy.append('충원 시')
     else:
         rec_dl_messy.append("확인 필요!")
 
@@ -141,9 +145,9 @@ for recruit_crawl in recruit_url:
 
         #직원 수
         try:
-            text_crawling(people, By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/ul/li//*[contains(text(),"명")]')
+            text_crawling(people_messy, By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/ul/li//*[contains(text(),"명")]')
         except:
-            people.append('-')
+            people_messy.append('-')
 
         #회사 주소 - 지역이 여러개인 경우를 손봐야함
         cpn_info_list_elm = driver.find_elements(By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div/dt')
@@ -170,7 +174,7 @@ for recruit_crawl in recruit_url:
             cpn_url.append('-')
 
     else:
-        people.append('-')
+        people_messy.append('-')
         cpn_add_messy.append('-')
         cpn_url.append('-')
 
@@ -193,7 +197,7 @@ for i in recruit_career:
         elif '년' in i:
             rec_career.append(i[i.rfind('경력')+3:i.rfind('년')])
         else:
-            rec_career.append('확인 필요!')
+            rec_career.append('무관')
     else:
         rec_career.append('-')
     
@@ -214,6 +218,8 @@ for i in rec_pub_messy:
 for i in rec_dl_messy:
     if i == '확인 필요!':
         rec_dl.append('확인 필요!')
+    elif i == '충원 시':
+        rec_dl.append('충원 시')
     else:
         rec_dl.append(i[5:7] + '월 ' + i[8:10] + '일')
 
@@ -223,7 +229,7 @@ for i in cpn_add_messy:
         cpn_add.append('-')
     else:
         a = i.split()
-        cpn_add.append(a[1] + " " + a[2])
+        cpn_add.append(a[0] + " " + a[1])
 
 #가구 회사 종류
 for i in rec_title:
@@ -243,6 +249,14 @@ for i in rec_title:
     else:
         cpn_kind.append('확인 필요!')
 
+#직원 수에서 명 빼기
+for i in people_messy:
+    if i == '-':
+        people.append(i)
+    else:
+        people.append(i[0:len(i)-2])
+
+print('리스트 개수입니다')
 print(len(rec_newcomer))
 print(len(rec_career))
 print(len(rec_intern))
@@ -254,7 +268,6 @@ print(len(people))
 print(len(cpn_add))
 print(len(recruit_url))
 print(len(cpn_url))
-
 
 #스프레드 시트에 작성----------------------------
 import gspread
