@@ -1,4 +1,4 @@
-page = 1 #입력된 페이지만큼 크롤링
+page = 10 #입력된 페이지만큼 크롤링
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -65,7 +65,6 @@ rec_title_messy = []
 recruit_career = [] #신입·경력·인턴 부분
 rec_pub_messy = []
 rec_dl_messy = []
-cpn_add_messy = []
 
 #채용공고 url 수집하기
 for p in range(1,page+1): # 원하는 페이지까지 반복문
@@ -143,7 +142,7 @@ for recruit_crawl in recruit_url:
         people.append("-")
 
     #회사 주소 - 지역이 여러개인 경우를 손봐야함
-    text_crawling(cpn_add_messy, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div:nth-child(2) > dl > dd > a")
+    text_crawling(cpn_add, By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div:nth-child(2) > dl > dd > a")
 
     #회사 url
     if len(driver.find_elements(By.CSS_SELECTOR, "#container > section > div.readSumWrap.clear > article > div.tbRow.clear > div.tbCol.tbCoInfo > dl > dd")) >= 5:
@@ -228,13 +227,6 @@ for i in rec_title:
     else:
         cpn_kind.append('확인 필요!')
 
-#회사 주소 00 00구 형태로 변환
-for i in cpn_add_messy:
-    if i == '-':
-        cpn_add.append('-')
-    else:
-        a = i.split()
-        cpn_add.append(a[0] + " " + a[1])
 
 
 print('리스트 개수입니다')
@@ -256,7 +248,7 @@ import gspread
 from pandas import DataFrame
 
 # json 파일이 위치한 경로를 값으로 줘야 합니다.
-json_file_path = "furnitures-recruit-automation-5da954d2f389.json"
+json_file_path = "C:/kbtCoding/picky_newsletter/furniture_crawl/furnitures-recruit-automation-5da954d2f389.json"
 gc = gspread.service_account(json_file_path)
 spreadsheet_url = "https://docs.google.com/spreadsheets/d/1ygo_XrS4p6bD5nD6ozG20NLz3NmVRn9u5JlM7rNuatY/edit?usp=sharing"
 doc = gc.open_by_url(spreadsheet_url)

@@ -1,4 +1,4 @@
-page = 1 #입력된 페이지만큼 크롤링
+page = 5 #입력된 페이지만큼 크롤링
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -145,22 +145,23 @@ for recruit_crawl in recruit_url:
 
         #직원 수
         try:
-            text_crawling(people_messy, By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/ul/li//*[contains(text(),"명")]')
+            # text_crawling(people_messy, By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/ul/li//*[contains(text(),"명")]')
+            text_crawling(people_messy, By.XPATH, '//*[@id="content"]/div/div/section[2]/div[2]/div/ul/li//*[contains(text(),"명")]')
         except:
             people_messy.append('-')
 
         #회사 주소 - 지역이 여러개인 경우를 손봐야함
-        cpn_info_list_elm = driver.find_elements(By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div/dt')
+        cpn_info_list_elm = driver.find_elements(By.XPATH, '//*[@id="content"]/div/div/section[2]/div[2]/div/div/dl/div/dt')
 
         cpn_info_list = []
-        for i in driver.find_elements(By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div/dt'):
+        for i in driver.find_elements(By.XPATH, '//*[@id="content"]/div/div/section[2]/div[2]/div/div/dl/div/dt'):
             cpn_info_list.append(i.text)
 
         if '주소' in cpn_info_list:
             for i in cpn_info_list_elm:
                 if '주소' == i.text:
-                    cpn_add_index = int(driver.find_elements(By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div/dt').index(i)) + 1
-                    text_crawling(cpn_add_messy, By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div[' + str(cpn_add_index) + ']/dd')
+                    cpn_add_index = int(driver.find_elements(By.XPATH, '//*[@id="content"]/div/div/section[2]/div[2]/div/div/dl/div/dt').index(i)) + 1
+                    text_crawling(cpn_add_messy, By.XPATH, '//*[@id="content"]/div/div/section[2]/div[2]/div/div/dl/div[' + str(cpn_add_index) + ']/dd')
         else:
             cpn_add_messy.append('-')
 
@@ -168,8 +169,8 @@ for recruit_crawl in recruit_url:
         if '홈페이지' in cpn_info_list:
             for i in cpn_info_list_elm:
                 if '홈페이지' == i.text:
-                    cpn_url_index = int(driver.find_elements(By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div/dt').index(i)) + 1
-                    cpn_url.append(driver.find_element(By.XPATH, '//*[@id="content"]/div/div[3]/section[2]/div[2]/div/div/dl/div[' + str(cpn_url_index) + ']/dd/a').get_attribute("href"))
+                    cpn_url_index = int(driver.find_elements(By.XPATH, '//*[@id="content"]/div/div/section[2]/div[2]/div/div/dl/div/dt').index(i)) + 1
+                    cpn_url.append(driver.find_element(By.XPATH, '//*[@id="content"]/div/div/section[2]/div[2]/div/div/dl/div[' + str(cpn_url_index) + ']/dd/a').get_attribute("href"))
         else:
             cpn_url.append('-')
 
@@ -274,7 +275,7 @@ import gspread
 from pandas import DataFrame
 
 # json 파일이 위치한 경로를 값으로 줘야 합니다.
-json_file_path = "furnitures-recruit-automation-5da954d2f389.json"
+json_file_path = "C:/kbtCoding/picky_newsletter/furniture_crawl/furnitures-recruit-automation-5da954d2f389.json"
 gc = gspread.service_account(json_file_path)
 spreadsheet_url = "https://docs.google.com/spreadsheets/d/1ygo_XrS4p6bD5nD6ozG20NLz3NmVRn9u5JlM7rNuatY/edit?usp=sharing"
 doc = gc.open_by_url(spreadsheet_url)

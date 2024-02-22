@@ -1,12 +1,13 @@
 #뉴스레터 생성시 작성해야 할 것
 #몇월 몇주차 인지
-month = '12'
-week = '2'
+year = '24'
+month = '2'
+week = '3'
 #언제까지의 채용공고 기준인지
-base_date = "23.12.10 까지의 채용공고 기준"
+base_date = "23.02.18 까지의 채용공고 기준"
 #신입,경력,인턴별로 새로운 채용공고가 몇개인지
-new_newcomer_number = 57
-new_career_number = 158
+new_newcomer_number = 0
+new_career_number = 0
 
 #구글시트에서 데이터 가져오기
 import gspread
@@ -65,7 +66,7 @@ pdfmetrics.registerFont(TTFont("나눔고딕d", "./../../fonts/NaverNanumSquareN
 pdfmetrics.registerFont(TTFont("나눔고딕e", "./../../fonts/NaverNanumSquareNeo/NanumSquareNeo/TTF/NanumSquareNeo-eHv.ttf"))
 
 #캔버스 생성
-pdf = canvas.Canvas("C:/Users/USER/Desktop/와이즈올 업무용/picky 뉴스레터 모음/뉴스레터 가구, 인테리어/" + month + "월/[" + month + "월 " + week + "주차] picky 가구.pdf")
+pdf = canvas.Canvas("C:/Users/USER/Desktop/와이즈올 업무용/picky 뉴스레터 모음/뉴스레터 가구, 인테리어/" + year + "년 " + month + "월/[" + month + "월 " + week + "주차] picky 가구.pdf")
 
 #신입 페이지 생성 함수
 def draw_newcomer_page():
@@ -85,10 +86,10 @@ def draw_newcomer_page():
     pdf.setFont("나눔고딕d", 10)
     pdf.setFillColor('#9BA2B3')
     pdf.drawString(30, 714, "채용 마감일")
-    pdf.drawString(100, 714, "회사 명")
-    pdf.drawString(250, 714, "구분")
-    pdf.drawString(340, 714, "직원 수")
-    pdf.drawString(390, 714, "위치")
+    pdf.drawString(110, 714, "회사 명")
+    # pdf.drawString(250, 714, "구분")
+    pdf.drawString(310, 714, "직원 수")
+    pdf.drawString(370, 714, "위치")
     pdf.drawString(480, 714, "채용 링크")
     pdf.drawString(530, 714, "홈페이지")
 
@@ -110,11 +111,11 @@ def draw_career_page():
     pdf.setFont("나눔고딕d", 10)
     pdf.setFillColor('#9BA2B3')
     pdf.drawString(30, 714, "채용 마감일")
-    pdf.drawString(100, 714, "회사 명")
-    pdf.drawString(240, 714, "요구 경력")
-    pdf.drawString(280, 714, "구분")
-    pdf.drawString(350, 714, "직원 수")
-    pdf.drawString(390, 714, "위치")
+    pdf.drawString(110, 714, "회사 명")
+    # pdf.drawString(240, 714, "요구 경력")
+    # pdf.drawString(290, 714, "구분")
+    pdf.drawString(310, 714, "직원 수")
+    pdf.drawString(370, 714, "위치")
     pdf.drawString(480, 714, "채용 링크")
     pdf.drawString(530, 714, "홈페이지")
 
@@ -138,10 +139,10 @@ for i in range(1,newcomer_number + 1):
     pdf.setFont("나눔고딕b", 9)
     pdf.setFillColor('#000000')
     pdf.drawString(30, y, new_dt_1[i])
-    pdf.drawString(100, y, new_dt_2[i])
-    pdf.drawString(250, y, new_dt_3[i])
-    pdf.drawString(340, y, new_dt_4[i])
-    pdf.drawString(390, y, new_dt_5[i])
+    pdf.drawString(110, y, new_dt_2[i])
+    # pdf.drawString(310, y, new_dt_3[i])
+    pdf.drawString(310, y, new_dt_4[i])
+    pdf.drawString(370, y, new_dt_5[i])
 
     pdf.setFont("나눔고딕e", 9)
     pdf.drawString(480, y, "click !")
@@ -177,11 +178,11 @@ for i in range(1,career_number + 1):
     pdf.setFont("나눔고딕b", 9)
     pdf.setFillColor('#000000')
     pdf.drawString(30, y, car_dt_1[i])
-    pdf.drawString(100, y, car_dt_2[i])
-    pdf.drawString(240, y, car_dt_3[i])
-    pdf.drawString(280, y, car_dt_4[i])
-    pdf.drawString(350, y, car_dt_5[i])
-    pdf.drawString(390, y, car_dt_6[i])
+    pdf.drawString(110, y, car_dt_2[i])
+    # pdf.drawString(240, y, car_dt_3[i])
+    # pdf.drawString(310, y, car_dt_4[i])
+    pdf.drawString(310, y, car_dt_5[i])
+    pdf.drawString(370, y, car_dt_6[i])
 
     pdf.setFont("나눔고딕e", 9)
     pdf.drawString(480, y, "click !")
