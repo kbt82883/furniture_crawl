@@ -1,4 +1,4 @@
-page = 5 #입력된 페이지만큼 크롤링
+page = 3 #입력된 페이지만큼 크롤링
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By

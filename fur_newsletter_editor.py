@@ -2,9 +2,9 @@
 #몇월 몇주차 인지
 year = '24'
 month = '2'
-week = '3'
+week = '4'
 #언제까지의 채용공고 기준인지
-base_date = "23.02.18 까지의 채용공고 기준"
+base_date = "23.02.25 까지의 채용공고 기준"
 #신입,경력,인턴별로 새로운 채용공고가 몇개인지
 new_newcomer_number = 0
 new_career_number = 0
